@@ -1,0 +1,88 @@
+---
+- hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+    - name: Set up authorized keys
+      become: yes
+      authorized_key:
+        user: ubuntu
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - 'files/ssh_keys/diana_fndz.pub'  
+        - 'files/ssh_keys/eduardo_garcia.pub'   
+        - 'files/ssh_keys/oliver_rojo.pub'      
+        - 'files/ssh_keys/orlando_flores.pub'    
+        - 'files/ssh_keys/pablo_ramirez.pub'     
+        - 'files/ssh_keys/rafael_rojas.pub'                                
+        - 'files/ssh_keys/sergio_nunez.pub' 
+
+    - name: Create Jenkins group
+      become: yes
+      group:
+        name: "jenkins"
+        state: present
+
+    - name: Create Jenkins user
+      become: yes
+      user:
+        name: "jenkins"
+        group: "jenkins"
+        home: "/home/jenkins"
+        shell: "/bin/false"
+        state: present
+
+#    - name: Install apt PPA dependencies
+#      become: yes
+#      apt:
+#        name: python-software-properties
+
+    - name: Install OpenJDK at its latest version
+      become: yes
+      apt: name={{item}} state=latest
+      with_items:
+          - openjdk-8-jdk
+          - openjdk-8-jre
+          - openjdk-8-jdk-headless
+          - openjdk-8-jre-headless
+
+    - name: Add Jenkins key
+      become: yes
+      apt_key:
+        url: "https://pkg.jenkins.io/debian-stable/jenkins.io.key"
+        state: present
+
+    - name: Add Jenkins repository
+      become: yes
+      apt_repository:
+        repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
+        state: present 
+
+    - name: Install Jenkins binary package
+      become: yes
+      apt:
+        name: 'jenkins'
+        state: latest
+        update_cache: yes
+
+    - name: Set JENKINS_HOME
+      become: yes
+      lineinfile:
+        dest: /etc/default/jenkins
+        line: "JENKINS_HOME=/home/jenkins"
+        regexp: '^JENKINS_HOME='
+      
+    - name: start jenkins
+      become: yes
+      service:
+        name: jenkins
+        state: started
+        enabled: yes   
