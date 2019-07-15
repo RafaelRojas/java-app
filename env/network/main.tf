@@ -3,6 +3,18 @@ provider "aws" {
   profile = var.aws_profile
 }
 
+
+terraform {
+  backend "s3" {
+    encrypt = true
+    bucket = "s3-javaapp-rafaelrojas7752"
+    region = "us-east-2"
+    key = "network/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+  }
+}
+
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
@@ -108,4 +120,5 @@ resource "aws_route_table_association" "java-app_private_assoc" {
   subnet_id      = aws_subnet.java-app_private_subnet.id
   route_table_id = aws_default_route_table.java-app_private_rt.id
 }
+
 
