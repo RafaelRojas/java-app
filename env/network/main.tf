@@ -6,10 +6,10 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    encrypt = true
-    bucket = "s3-javaapp-rafaelrojas7752"
-    region = "us-east-2"
-    key = "network/terraform.tfstate"
+    #encrypt        = true
+    bucket         = "s3-javaapp-rafaelrojas7752"
+    region         = "us-east-2"
+    key            = "network/terraform.tfstate"
     dynamodb_table = "terraform-state-lock"
   }
 }

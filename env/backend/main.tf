@@ -34,54 +34,25 @@ resource "aws_dynamodb_table" "terraform-state-lock" {
 
 resource "aws_s3_bucket_policy" "s3-japp-bc" {
   bucket = "s3-javaapp-rafaelrojas7752"
-
-#  policy = <<POLICY
-#{
-#  "Version": "2012-10-17",
-#  "Statement": [
-#    {
-#      "Effect": "Allow",
-#      "Action": "s3:ListBucket",
-#      "Resource": "arn:aws:s3:::s3-javaapp-rafaelrojas7752"
-#    },
-#    {
-#      "Effect": "Allow",
-#      "Action": ["s3:GetObject", "s3:PutObject"],
-#      "Resource": "arn:aws:s3:::s3-javaapp-rafaelrojas7752"
-#    }
-#  ]
-#}
-#POLICY
-policy =<<EOF
+  
+  policy = <<POLICY
 {
-  "Version": "2012-10-17",
-  "Id": "RequireEncryption",
-   "Statement": [
-    {
-      "Sid": "RequireEncryptedTransport",
-      "Effect": "Deny",
-      "Action": ["s3:*"],
-      "Resource": ["arn:aws:s3:::s3-javaapp-rafaelrojas7752/*"],
-      "Condition": {
-        "Bool": {
-          "aws:SecureTransport": "false"
+    "Id": "Policy1563402733459",
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1563401284635",
+            "Action": "s3:*",
+            "Effect": "Allow",
+            "Resource": "arn:aws:s3:::s3-javaapp-rafaelrojas7752/*",
+            "Principal": {
+                "AWS": [
+                    "arn:aws:iam::938635207917:user/terradmin"
+                ]
+            }
         }
-      },
-      "Principal": "*"
-    },
-    {
-      "Sid": "RequireEncryptedStorage",
-      "Effect": "Deny",
-      "Action": ["s3:PutObject"],
-      "Resource": ["arn:aws:s3:::s3-javaapp-rafaelrojas7752/*"],
-      "Condition": {
-        "StringNotEquals": {
-          "s3:x-amz-server-side-encryption": "AES256"
-        }
-      },
-      "Principal": "*"
-    }
-  ]
+    ]
 }
-EOF
+POLICY
+  depends_on = ["aws_s3_bucket.s3-javaapp-rafaelrojas7752"]
 }
