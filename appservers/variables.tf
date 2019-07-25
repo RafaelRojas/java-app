@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "aws_profile" {
-  default     = "rafael"
+  default     = "terraform-user"
   description = "default aws profile"
 }
 
@@ -27,3 +27,4 @@ variable "image_id" {
   default     = "ami-0122a2485ffbbba89"
   description = "appserver image AMI created to deploy server"
 }
+

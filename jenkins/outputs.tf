@@ -5,3 +5,4 @@ output "jenkins_private_key" {
 output "jenkins_public_key" {
   value = "tls_private_key.jenkins_key.public_key_pem"
 }
+

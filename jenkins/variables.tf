@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "aws_profile" {
-  default     = "rafael"
+  default     = "terraform-user"
   description = "default aws profile"
 }
 
@@ -27,3 +27,4 @@ variable "image_id" {
   default     = "ami-0a634689b56b4941c"
   description = "Jenkins image AMI created to deploy server"
 }
+

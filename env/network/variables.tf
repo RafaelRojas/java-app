@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "aws_profile" {
   description = " AWS profile to use"
-  default     = "rafael"
+  default     = "terraform-user"
 }
 
 variable "vpc_cidr" {
