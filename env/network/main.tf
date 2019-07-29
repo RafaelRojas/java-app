@@ -7,15 +7,15 @@ provider "aws" {
 
 
 ###Uncomment when ready for S3 backend
-#terraform {
-#  backend "s3" {
-#    #encrypt        = true
-#    bucket         = "s3-javaapp-rafaelrojas7752"
-#    region         = "us-east-2"
-#    key            = "network/terraform.tfstate"
-#    dynamodb_table = "terraform-state-lock"
-#  }
-#}
+terraform {
+  backend "s3" {
+    #encrypt        = true
+    bucket         = "s3-javaapp-rafaelrojas7752"
+    region         = "us-east-2"
+    key            = "network/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+  }
+}
 
 
 

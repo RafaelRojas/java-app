@@ -23,8 +23,3 @@ variable "jenkins_instance_type" {
   description = "jenkins instance type"
 }
 
-variable "image_id" {
-  default     = "ami-0a634689b56b4941c"
-  description = "Jenkins image AMI created to deploy server"
-}
-

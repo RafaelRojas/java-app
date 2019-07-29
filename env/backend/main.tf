@@ -10,7 +10,8 @@ resource "aws_s3_bucket" "s3-javaapp-rafaelrojas7752" {
     enabled = true
   }
   lifecycle {
-    prevent_destroy = true
+    # Change to true on Prod
+    prevent_destroy = false
   }
   tags = {
     Name = "Terraform S3 Remote State Store"

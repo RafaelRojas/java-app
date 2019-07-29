@@ -5,7 +5,7 @@ WARNING: This script does not filter images or AMIs, it deletes ALL self owned o
 
 '''
 import boto3, sys
-boto3.setup_default_session(profile_name = 'rafael')
+boto3.setup_default_session(profile_name = 'terraform-user')
 ec2 = boto3.client('ec2', 'us-east-2')
 images = ec2.describe_images(Owners=['self'])
 for image in images['Images']:

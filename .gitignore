@@ -2,4 +2,8 @@
 *.tfstate
 *.tfstate.backup
 *.pem
+*.retry
  images/ansible/files/
+deploy.sh
+build1.sh
+build.sh

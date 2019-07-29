@@ -5,32 +5,32 @@ provider "aws" {
 
 
 ## Uncoment when ready to use s3 backend
-#terraform {
-#  backend "s3" {
-#    bucket         = "s3-javaapp-rafaelrojas7752"
-#    region         = "us-east-2"
-#    key            = "appserver/terraform.tfstate"
-#    dynamodb_table = "terraform-state-lock"
-#  }
-#}   
+terraform {
+  backend "s3" {
+    bucket         = "s3-javaapp-rafaelrojas7752"
+    region         = "us-east-2"
+    key            = "appserver/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+  }
+}
 
-# data "terraform_remote_state" "network" {
+#data "terraform_remote_state" "network" {
 #  backend = "s3"
-#  config  = {
+#  config = {
 #    bucket = "s3-javaapp-rafaelrojas7752"
-#    key = "network/terraform.tfstate"
+#    key    = "network/terraform.tfstate"
 #    region = "us-east-2"
 #  }
 #}
 
 ##Use local backend for testing purposes
-data "terraform_remote_state" "network" {
-  backend = "local"
+#data "terraform_remote_state" "network" {
+#  backend = "local"
 
-  config = {
-    path = "../env/network/terraform.tfstate"
-  }
-}
+#  config = {
+#    path = "../env/network/terraform.tfstate"
+#  }
+#}
 
 
 resource "tls_private_key" "appkey" {
@@ -69,7 +69,7 @@ resource "aws_autoscaling_group" "application" {
   min_size                  = 1
   desired_capacity          = 3
   launch_configuration      = aws_launch_configuration.java-app_lcfg.id
-  vpc_zone_identifier       = [ "${data.terraform_remote_state.network.outputs.java-app_private_subnet}", "${data.terraform_remote_state.network.outputs.java-app_public_subnet}" ]
+  vpc_zone_identifier       = ["${data.terraform_remote_state.network.outputs.java-app_private_subnet}", "${data.terraform_remote_state.network.outputs.java-app_public_subnet}"]
   health_check_type         = "EC2"
   health_check_grace_period = 300
 
@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "application" {
 resource "aws_security_group" "application_sg" {
   name        = "application_sg"
   description = "Allows connection for app layer"
-  vpc_id = data.terraform_remote_state.network.outputs.java-app_vpc
+  vpc_id      = data.terraform_remote_state.network.outputs.java-app_vpc
 
   ingress {
     from_port   = 22

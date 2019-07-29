@@ -9,32 +9,33 @@ resource "tls_private_key" "jenkins_key" {
 }
 
 ## Uncoment when ready to use s3 backend
-#terraform {
-#  backend "s3" {
-#    bucket         = "s3-javaapp-rafaelrojas7752"
-#    region         = "us-east-2"
-#    key            = "appserver/terraform.tfstate"
-#    dynamodb_table = "terraform-state-lock"
-#  }
-#}   
+terraform {
+  backend "s3" {
+    bucket         = "s3-javaapp-rafaelrojas7752"
+    region         = "us-east-2"
+    key            = "ci-server/terraform.tfstate"
+    dynamodb_table = "terraform-state-lock"
+  }
+}
 
-# data "terraform_remote_state" "network" {
+#data "terraform_remote_state" "appserver" {
 #  backend = "s3"
-#  config  = {
+#  config = {
 #    bucket = "s3-javaapp-rafaelrojas7752"
-#    key = "network/terraform.tfstate"
+#    key    = "appserver/terraform.tfstate"
 #    region = "us-east-2"
+#    dynamodb_table = "terraform-state-lock"
 #  }
 #}
 
 ##Use local backend for testing purposes
-data "terraform_remote_state" "network" {
-  backend = "local"
+#data "terraform_remote_state" "network" {
+#  backend = "local"
 
-  config = {
-    path = "../env/network/terraform.tfstate"
-  }
-}
+#  config = {
+#    path = "../env/network/terraform.tfstate"
+#  }
+#}
 
 
 resource "aws_key_pair" "jenkins_keypair" {
@@ -45,7 +46,7 @@ resource "aws_key_pair" "jenkins_keypair" {
 resource "aws_security_group" "jenkins_sg" {
   name        = "jenkins_sg"
   description = "Allows connection for Jenkins"
-  vpc_id = data.terraform_remote_state.network.outputs.java-app_vpc
+  vpc_id      = data.terraform_remote_state.network.outputs.java-app_vpc
 
   #SSH
   ingress {
@@ -92,11 +93,11 @@ resource "aws_launch_configuration" "jenkins_lcfg" {
 }
 
 resource "aws_autoscaling_group" "jenkins" {
-  name                 = "jenkins_asg"
-  max_size             = 1
-  min_size             = 1
-  launch_configuration = aws_launch_configuration.jenkins_lcfg.id
-  vpc_zone_identifier       = [ "${data.terraform_remote_state.network.outputs.java-app_private_subnet}", "${data.terraform_remote_state.network.outputs.java-app_public_subnet}" ]
+  name                      = "jenkins_asg"
+  max_size                  = 1
+  min_size                  = 1
+  launch_configuration      = aws_launch_configuration.jenkins_lcfg.id
+  vpc_zone_identifier       = ["${data.terraform_remote_state.network.outputs.java-app_private_subnet}", "${data.terraform_remote_state.network.outputs.java-app_public_subnet}"]
   health_check_type         = "EC2"
   health_check_grace_period = 300
 

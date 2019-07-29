@@ -53,6 +53,7 @@
           - openjdk-8-jre
           - openjdk-8-jdk-headless
           - openjdk-8-jre-headless
+      retries: 5
 
     - name: Add Jenkins key
       become: yes
