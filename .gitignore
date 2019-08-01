@@ -7,3 +7,5 @@
 deploy.sh
 build1.sh
 build.sh
+logs/*
+deploy.sh
