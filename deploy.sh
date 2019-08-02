@@ -1,9 +1,9 @@
 #!/bin/bash
 ##A bash script to deploy java-app env
 
-export AWS_ACCESS_KEY_ID=AKIA5VCYEUTWZ2OPOKL6
-export AWS_SECRET_ACCESS_KEY=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
-export AWS_REGION=us-east-2
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_REGION=
 
 WORKING_DIR=$(pwd)
 TIMESTAMP=$(date "+%Y-%m-%d_%H%M%S")
