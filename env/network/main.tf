@@ -110,7 +110,7 @@ resource "aws_subnet" "java-app_rds_subnet2" {
 
 resource "aws_db_subnet_group" "java-app_rds_sng" {
   name       = "java-app_rds_sng"
-  subnet_ids = [aws_subnet.java-app_rds_subnet1.id, aws_subnet.java-app_rds_subnet2.id]
+  subnet_ids = [aws_subnet.java-app_private_subnet.id, aws_subnet.java-app_rds_subnet1.id, aws_subnet.java-app_rds_subnet2.id]
 
   tags = {
     Name = "java-app_rds_sng"

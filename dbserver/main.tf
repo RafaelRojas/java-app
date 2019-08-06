@@ -75,6 +75,6 @@ resource "aws_db_instance" "appserver-db" {
   db_subnet_group_name   = data.terraform_remote_state.network.outputs.java-app_rds_sng
   vpc_security_group_ids = [aws_security_group.dbserver_sg.id]
   skip_final_snapshot    = true
-  publicly_accessible    = true
+  publicly_accessible    = false
 }
 
