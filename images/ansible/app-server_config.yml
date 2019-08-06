@@ -73,3 +73,13 @@
         - 'files/ssh_keys/pablo_ramirez.pub'     
         - 'files/ssh_keys/rafael_rojas.pub'                                
         - 'files/ssh_keys/sergio_nunez.pub' 
+        - 'files/appserver_key.pub'
+
+    - name: Setup JavaApp private keys
+      become: yes
+      copy: 
+        src: files/appserver_key
+        dest: /home/ubuntu/.ssh/
+        owner: ubuntu
+        group: ubuntu
+        mode: 0600 
