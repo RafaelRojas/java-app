@@ -52,5 +52,15 @@
         "ansible_env_vars": [ "ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s'", "ANSIBLE_NOCOLOR=True" ],
         "playbook_file": "../ansible/ci-server_config.yml"
       }
-    ]
-  }
+    ],
+    "post-processors": [
+    {
+      "type": "manifest",
+      "output": "../../logs/ci-manifest.json",
+      "strip_path": true,
+      "custom_data": {
+        "my_custom_data": "ci-erver-manifest"
+      }
+    }
+  ]  
+}
